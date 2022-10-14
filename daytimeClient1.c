@@ -9,7 +9,7 @@
 #include "Practical.h"
 
 int main(int argc, char*argv[]) {
-    char recvbugger[BUFSIZE];   //  I/0 buffer
+    char recvbuffer[BUFSIZE];   //  I/0 buffer
     int numBytes = 0;
 
     if(argc < 3)    // Test for correct number of arguments
