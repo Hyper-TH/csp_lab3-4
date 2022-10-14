@@ -18,7 +18,7 @@ int main(int argc, char*argv[]) {
     
     char *servIP = argv[1]; // First arg: server IP address (dotted quad)
 
-    int_port_t servPort = atoi(argv[2]);
+    in_port_t servPort = atoi(argv[2]);
 
     // Create a reliable, stream socket using TCP
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -28,7 +28,7 @@ int main(int argc, char*argv[]) {
     // Construct the server address structure
     struct sockaddr_in servAddr;            // Server address
     memset(&servAddr, 0, sizeof(servAddr)); // Zero out structure
-    servAddr.sin_Family = AF_INET;          // IPv4 address family
+    servAddr.sin_family = AF_INET;          // IPv4 address family
     // Convert address
     int rtnVal = inet_pton(AF_INET, servIP, &servAddr.sin_addr.s_addr);
     if(rtnVal == 0)
