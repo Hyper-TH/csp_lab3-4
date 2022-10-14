@@ -13,7 +13,7 @@
 #include "Practical.h"
 
 int main(int argc, char*argv[]) {
-    char recvbugger[BUFSIZE];   //  I/0 buffer
+    char recvbuffer[BUFSIZE];   //  I/0 buffer
     int numBytes = 0;
 
     if(argc < 3)    // Test for correct number of arguments
@@ -22,7 +22,7 @@ int main(int argc, char*argv[]) {
     
     char *servIP = argv[1]; // First arg: server IP address (dotted quad)
 
-    int_port_t servPort = atoi(argv[2]);
+    in_port_t servPort = atoi(argv[2]);
 
     // Create a reliable, stream socket using TCP
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -32,11 +32,13 @@ int main(int argc, char*argv[]) {
     // Construct the server address structure
     struct sockaddr_in servAddr;            // Server address
     memset(&servAddr, 0, sizeof(servAddr)); // Zero out structure
-    servAddr.sin_Family = AF_INET;          // IPv4 address family
+    servAddr.sin_family = AF_INET;          // IPv4 address family
     // Convert address
     int rtnVal = inet_pton(AF_INET, servIP, &servAddr.sin_addr.s_addr);
     if(rtnVal == 0)
         DieWithUserMessage("inet_pton() failed", "invalid address string");
+    else if(rtnVal < 0)
+        DieWithSystemMessage("inet_pton() failed");
     servAddr.sin_port = htons(servPort);    // Server port
 
     // Establish the connection to the echo server
@@ -54,13 +56,11 @@ int main(int argc, char*argv[]) {
 
     if(numBytes < 0) 
         DieWithSystemMessage("recv() failed");
-            // else if (numBytes == 0)
-            // DieWithUserMessage("recv()", "connection closed prematurely");
 
     /* START ADDED LINES */    
     else if(numBytes == 0)
         DieWithUserMessage("recv()", "connection closed prematurely");
-    /* END ADDED LINES */    
+    /* END ADDED LINES */  
     fputc('\n', stdout);    // Print a final linefeed
 
     close(sock);
