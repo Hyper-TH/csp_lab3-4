@@ -56,14 +56,14 @@ int main(int argc, char *argv[]) {
     // clntSock is connected to a client!
     snprintf(sendbuffer, sizeof(sendbuffer), "%.24s\r\n", ctime(&ticks)); //Create data and time string in outgoing buffer
     ssize_t numBytes_lines1 = send(clntSock, sendLines, strlen(sendLines), 0);
-	ssize_t numBytes_spaces1 = send(clntSock, sendSpacing, strlen(sendSpacing), 0);
 	ssize_t numBytes_text1 = send(clntSock, sendText, strlen(sendText), 0);
+	ssize_t numBytes_spaces1 = send(clntSock, sendSpacing, strlen(sendSpacing), 0);
 
 
     ssize_t numBytesSent = send(clntSock, sendbuffer, strlen(sendbuffer), 0); //Send date and time string to the client 
 
-	ssize_t numBytes_text2 = send(clntSock, sendText, strlen(sendText), 0);
 	ssize_t numBytes_spaces2 = send(clntSock, sendSpacing, strlen(sendSpacing), 0);
+	ssize_t numBytes_text2 = send(clntSock, sendText, strlen(sendText), 0);
 	ssize_t numBytes_lines2 = send(clntSock, sendLines, strlen(sendLines), 0);
     /*	START ADDED LINES */
 	//ssize_t numBytesSent = send("Hello student c20361521");
