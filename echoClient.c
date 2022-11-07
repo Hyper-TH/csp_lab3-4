@@ -14,6 +14,7 @@
 
 int main(int argc, char*argv[]) {
     char recvbuffer[BUFSIZE];   //  I/0 buffer
+    char sendbuffer[BUFSIZE];   // INPUT
     int numBytes = 0;
 
     if(argc < 3)    // Test for correct number of arguments
@@ -21,6 +22,7 @@ int main(int argc, char*argv[]) {
         "<Server Address> <Server Port>");
     
     char *servIP = argv[1]; // First arg: server IP address (dotted quad)
+    char *echoString = argv[3]; // String to be sent to the echoServer
 
     in_port_t servPort = atoi(argv[2]);
 
@@ -44,6 +46,11 @@ int main(int argc, char*argv[]) {
     // Establish the connection to the echo server
     if(connect(sock, (struct sockaddr *) &servAddr, sizeof(servAddr)) < 0)
         DieWithSystemMessage("connect() failed");
+
+    // Send message to server
+    snprintf(sendbuffer, sizeof(sendbuffer), "%s\r\n", echoString);
+    ssize_t numBytesSent = send(sock, sendbuffer, strlen(sendbuffer), 0);   
+    ssize_t numBytes_input = send(sock, sendbuffer, strlen(sendbuffer), 0);
 
     while((numBytes = recv(sock, recvbuffer, BUFSIZE - 1, 0)) > 0) {
         recvbuffer[numBytes] = '\0';    // Terminate the string!
