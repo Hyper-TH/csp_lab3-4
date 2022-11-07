@@ -13,7 +13,12 @@ static const int MAXPENDING = 5; // Maximum outstanding connection requests
 
 int main(int argc, char *argv[]) {
 	time_t	ticks;  //variable to hold date and time data
+	// recvbuffer from daytimeClient
 	char sendbuffer[BUFSIZE]; // Buffer for sending data to the client 
+	// ADDED LINES
+	char sendLines[50] = "=========================================\n";	
+	char sendSpacing[50] = "                                       \n";
+	char sendText[50] = "TWILA HABAB\n";
 
 	if (argc != 2) // Test for correct number of arguments
 		DieWithUserMessage("Parameter(s)", "<Server Port>");
@@ -47,10 +52,28 @@ int main(int argc, char *argv[]) {
     if (clntSock < 0)
       DieWithSystemMessage("accept() failed");
 
+
     // clntSock is connected to a client!
     snprintf(sendbuffer, sizeof(sendbuffer), "%.24s\r\n", ctime(&ticks)); //Create data and time string in outgoing buffer
+    ssize_t numBytes_lines1 = send(clntSock, sendLines strlen(sendLines), 0);
+	ssize_t numBytes_spaces1 = send(clntSock, sendSpacing strlen(sendSpacing), 0);
+	ssize_t numBytes_Text2 = send(clntSock, sendText strlen(sendText), 0);
+
+
     ssize_t numBytesSent = send(clntSock, sendbuffer, strlen(sendbuffer), 0); //Send date and time string to the client 
-    if (numBytesSent < 0)
+
+	ssize_t numBytes_Text2 = send(clntSock, sendText strlen(sendText), 0);
+	ssize_t numBytes_spaces2 = send(clntSock, sendSpacing strlen(sendSpacing), 0);
+	ssize_t numBytes_lines2 = send(clntSock, sendLines strlen(sendLines), 0);
+    /*	START ADDED LINES */
+	//ssize_t numBytesSent = send("Hello student c20361521");
+
+
+
+
+
+    /*	END ADDED LINES ADDED LINES */
+	if (numBytesSent < 0)
       DieWithSystemMessage("send() failed");
 
 	close(clntSock); // Close client socket
